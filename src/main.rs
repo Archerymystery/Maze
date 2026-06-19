@@ -41,4 +41,5 @@ fn print_maze(maze: Maze) {
 fn main() {
     let maze = generate_maze(10, 10);
     print_maze(maze);
+    println!("Hello, world!");
 }
