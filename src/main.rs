@@ -1,4 +1,5 @@
 use colored::*;
+use dialoguer::{Input, theme::ColorfulTheme};
 use rand::{random_bool, random_range, seq::IndexedMutRandom};
 use std::{f64::consts::PI, vec};
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -208,4 +209,17 @@ fn generate_maze(mut width: usize, mut height: usize) -> Maze {
     }
     maze
 }
-fn main() {}
+fn main() {
+    let theme = ColorfulTheme::default();
+    let width: usize = Input::with_theme(&theme)
+        .with_prompt("Enter maze width (even numbers will be reduced by 1)")
+        .interact_text()
+        .unwrap();
+
+    let height: usize = Input::with_theme(&theme)
+        .with_prompt("Enter maze height (even numbers will be reduced by 1)")
+        .interact_text()
+        .unwrap();
+    let maze = generate_maze(width, height);
+    maze.print();
+}
