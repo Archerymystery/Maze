@@ -1,7 +1,7 @@
 use colored::*;
 use dialoguer::{Input, theme::ColorfulTheme};
 use rand::{random_bool, random_range, seq::IndexedMutRandom};
-use std::{f64::consts::PI, vec};
+use std::{f64::consts::PI, process::exit, vec};
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum MazeSquare {
     Entrance,
@@ -65,7 +65,11 @@ fn generate_maze(mut width: usize, mut height: usize) -> Maze {
     if width.is_multiple_of(2) {
         width -= 1;
     }
-    let idx = move |p: Point| p.y * width + p.x;
+    let v_width = width / 2;
+    let v_height = height / 2;
+
+    let mut visited = vec![false; v_width * v_height];
+    let idx = move |p: Point| (p.y / 2) * v_width + (p.x / 2);
     let mut maze = Maze {
         width,
         height,
@@ -74,7 +78,6 @@ fn generate_maze(mut width: usize, mut height: usize) -> Maze {
 
     let count = (height / 2) * (width / 2);
     let mut visited_count: usize = 1;
-    let mut visited = vec![false; width * height];
     let mut stack: Vec<Point> = vec![];
     let start_point = Point {
         x: 1 + random_range(1..=(width - 2) / 2) * 2,
@@ -186,7 +189,7 @@ fn generate_maze(mut width: usize, mut height: usize) -> Maze {
             }
         }
         if available_points.is_empty() {
-            maze.set_point(stack.pop().unwrap(), MazeSquare::Road);
+            stack.pop();
             continue;
         }
 
@@ -196,15 +199,20 @@ fn generate_maze(mut width: usize, mut height: usize) -> Maze {
         visited[idx(*point)] = true;
     }
     let mut traps_on_main = 0;
-    for _ in 0..random_range(1..=5) {
+    for _ in 0..random_range(5..=5) {
         let trap_point = Point {
             x: 1 + random_range(1..=(width - 2) / 2) * 2,
             y: 1 + random_range(1..=(height - 2) / 2) * 2,
         };
-        if maze.get_point(trap_point) != Some(MazeSquare::Wall) {
-            if stack.contains(&trap_point) && traps_on_main <= 2 {
-                traps_on_main += 1;
-                maze.set_point(trap_point, MazeSquare::Trap);
+        if trap_point != start_point
+            && trap_point != exit_point
+            && maze.get_point(trap_point) != Some(MazeSquare::Wall)
+        {
+            if visited[idx(trap_point)] {
+                if traps_on_main <= 2 {
+                    traps_on_main += 1;
+                    maze.set_point(trap_point, MazeSquare::Trap);
+                }
             } else {
                 maze.set_point(trap_point, MazeSquare::Trap);
             }
