@@ -154,6 +154,9 @@ fn generate_maze(mut width: usize, mut height: usize) -> Maze {
     stack.clear();
     stack.push(start_point);
     visited[idx(start_point)] = true;
+    if random_bool(0.5) {
+        return maze;
+    }
     loop {
         available_points.clear();
         let current = *stack.last().unwrap();
@@ -193,7 +196,7 @@ fn generate_maze(mut width: usize, mut height: usize) -> Maze {
         visited[idx(*point)] = true;
     }
     let mut traps_on_main = 0;
-    for _ in 0..=random_range(0..=5) {
+    for _ in 0..random_range(1..=5) {
         let trap_point = Point {
             x: 1 + random_range(1..=(width - 2) / 2) * 2,
             y: 1 + random_range(1..=(height - 2) / 2) * 2,
