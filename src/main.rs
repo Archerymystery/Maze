@@ -219,11 +219,25 @@ fn main() {
     let theme = ColorfulTheme::default();
     let width: usize = Input::with_theme(&theme)
         .with_prompt("Enter maze width (even numbers will be reduced by 1)")
+        .validate_with(|input: &usize| -> Result<(), String> {
+            if *input >= 5 {
+                Ok(())
+            } else {
+                Err("Size must be greate then 5".into())
+            }
+        })
         .interact_text()
         .unwrap();
 
     let height: usize = Input::with_theme(&theme)
         .with_prompt("Enter maze height (even numbers will be reduced by 1)")
+        .validate_with(|input: &usize| -> Result<(), String> {
+            if *input >= 5 {
+                Ok(())
+            } else {
+                Err("Size must be greate then 5".into())
+            }
+        })
         .interact_text()
         .unwrap();
     let maze = generate_maze(width, height);
