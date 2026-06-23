@@ -59,13 +59,13 @@ impl Maze {
 
 fn generate_maze(mut width: usize, mut height: usize) -> Maze {
     let mut rng = rand::rng();
-    let idx = move |p: Point| p.y * width + p.x;
     if height.is_multiple_of(2) {
         height -= 1;
     }
     if width.is_multiple_of(2) {
         width -= 1;
     }
+    let idx = move |p: Point| p.y * width + p.x;
     let mut maze = Maze {
         width,
         height,
