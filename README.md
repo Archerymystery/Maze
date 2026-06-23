@@ -10,7 +10,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 2. Clone repo
 ```bash
 git clone https://github.com/Archerymystery/Maze.git
-cd Orderbook
+cd Maze
 ```
 3. Run the program
 ```bash
@@ -26,7 +26,7 @@ nix run github:Archerymystery/Maze
 2. Clone repo
 ```
 git clone https://github.com/Archerymystery/Maze.git
-cd Orderbook
+cd Maze
 ```
 3. Run the program
 ```
