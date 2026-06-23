@@ -49,7 +49,7 @@
       };
       apps.${system}.default = {
         type = "app";
-        program = "${orderbookPkg}/bin/Orderbook";
+        program = "${orderbookPkg}/bin/maze";
       };
       devShells.x86_64-linux.default = pkgs.mkShell {
         buildInputs = with pkgs; [
